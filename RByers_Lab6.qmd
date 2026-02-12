@@ -5,11 +5,7 @@ format:
     axe: true
 ---
 
-# Page 1
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Charts from Lab 4
+# Charts from Lab 4
 
 These charts are from Lab 4.
 
@@ -27,8 +23,6 @@ library(colorblindr)
 library(remotes)
 library(gghighlight)
 library(ggplot2)
-data(penguins)
-summary(penguins)
 LengthxBill2 <- ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
 geom_point(size = 3, alpha = 0.7) +
 labs(title = "Scatterplot of Bill Length vs. Bill Depth by Species", x = "Bill Length", y = "Bill Depth") +
@@ -41,7 +35,24 @@ You can add options to executable code like this
 
 ```{r}
 #| echo: false
-2 * 2
+penguin_summary <- penguins %>%
+  drop_na(sex) %>%
+  group_by(species, sex) %>%
+  summarize(mean_mass = mean(body_mass_g), .groups = "drop")
+
+SpeciesHeatmap <- ggplot(penguin_summary, aes(species, sex)) +
+  geom_tile(aes(fill = mean_mass), colour = "white") + labs(title = "Heatmap of Mean Body Mass", x = "Species", y = "Sex") +
+  scale_fill_distiller(palette = "RdBu", direction = -1) +geom_text(aes(label = mean_mass))
+SpeciesHeatmap
+```
+
+```{r}
+#| echo: false
+penguinscount <- penguins %>% count(year, species)
+penguinscount <- as.data.frame(penguinscount)
+CountxSpeciesBetter <- ggplot(penguinscount, aes(x = species, y = n, fill = species)) +
+  geom_bar(stat="identity") + theme_minimal() + labs(title = "Penguin Count by Species", x = "Species", y = "Cost") + scale_fill_brewer(palette = "Dark2")
+CountxSpeciesBetter
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
@@ -50,6 +61,11 @@ The `echo: false` option disables the printing of code (only output is displayed
 
 ...
 
-# Page 2
+# Checking for Accessibility
 
-## Tabsets
+Checking for accessibility:
+
+```{r}
+#| echo: false
+cvd_grid(CountxSpeciesBetter)
+```
