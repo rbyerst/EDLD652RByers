@@ -2,8 +2,7 @@
 title: "Rachel Byers Lab 6"
 format:
   dashboard:
-    scrolling: true
-    output-dir: docs
+    axe: true
 ---
 
 #  {.sidebar}
@@ -36,13 +35,14 @@ labs(title = "Scatterplot of Bill Length vs. Bill Depth by Species", x = "Bill L
 scale_color_brewer(palette = "Set2") + theme_bw()
 LengthxBill2
 ```
+
 ------------------------------------------------------------------------
 
 ## Mean Mass and County by Species
 
 ##  {height="50%"}
 
-## {.tabset}
+##  {.tabset}
 
 ```{r}
 #| echo: false
@@ -67,10 +67,6 @@ CountxSpeciesBetter <- ggplot(penguinscount, aes(x = species, y = n, fill = spec
   geom_bar(stat="identity") + theme_minimal() + labs(title = "Penguin Count by Species", x = "Species", y = "Cost") + scale_fill_brewer(palette = "Dark2")
 CountxSpeciesBetter
 ```
-
-## 
-
-...
 
 # Checking for Accessibility
 
